@@ -98,6 +98,14 @@ router.get('/update', function (req, res, next) {
 
 /* POST update exoplanet. */
 router.post('/update', function (req, res, next) {
+    savePlanet(req);
+
+    res.redirect('/exoplanets');
+});
+
+
+module.exports = router;
+function savePlanet(req) {
     console.log("POST UPDATE EXOPLANET");
     Exoplanet.save({
         id: parseInt(req.body.idExoplanet),
@@ -107,12 +115,8 @@ router.post('/update', function (req, res, next) {
         IST: parseFloat(req.body.ISTExoplanet),
         pClass: req.body.pClassExoplanet
     });
+}
 
-    res.redirect('/exoplanets');
-});
-
-
-module.exports = router;
 function addPlanet(req) {
     console.log("req.file : " + JSON.stringify(req.file));
     let filename = null;
