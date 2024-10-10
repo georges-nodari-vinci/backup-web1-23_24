@@ -2,17 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const multer = require('multer')
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/images');
-    },
-    filename: function (req, file, cb) {
-        const date = new Date();
-        const uniquePrefix = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
-        // Math.round(Math.random() * 1E9)
-        cb(null, uniquePrefix + '-' + file.originalname);
-    }
-})
+const storage = storage();
 const upload = multer({ storage: storage });
 
 const validator = require('validator');
@@ -36,6 +26,7 @@ router.post('/add', upload.single('imageExoplanet'), function (req, res, next) {
         let filename = null;
         // req.file must be undefined if no file given
         if (req.file === undefined) filename = null;
+
         else filename = 'images/' + req.file.filename;
         Exoplanet.save({
             uniqueName: req.body.uniqueNameExoplanet,
@@ -43,6 +34,7 @@ router.post('/add', upload.single('imageExoplanet'), function (req, res, next) {
             discoveryYear: req.body.discoveryYearExoplanet,
             image: filename
         });
+        
         res.redirect('/exoplanets');
     }
     else {
@@ -127,3 +119,17 @@ router.post('/update', function (req, res, next) {
 
 
 module.exports = router;
+function storage() {
+    return multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'public/images');
+        },
+        filename: function (req, file, cb) {
+            const date = new Date();
+            const uniquePrefix = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds();
+            // Math.round(Math.random() * 1E9)
+            cb(null, uniquePrefix + '-' + file.originalname);
+        }
+    });
+}
+
