@@ -60,13 +60,18 @@ router.post('/delete', (req, res, next) => {
 
 /* GET details exoplanet. */
 router.get('/details', function (req, res, next) {
-    console.log("GET DETAILS EXOPLANET");
-    // convert string req.query.id to int
-    // another solution is to use == instead of === in if instruction
-    const exoplanetIdParam = parseInt(req.query.id);
-    const exoplanetFound = Exoplanet.findById(exoplanetIdParam);
+    const exoplanetFound = DetailFunction();
     res.render('exoplanets/details.hbs', { exoplanet: exoplanetFound });
 
+
+    function DetailFunction() {
+        console.log("GET DETAILS EXOPLANET");
+        // convert string req.query.id to int
+        // another solution is to use == instead of === in if instruction
+        const exoplanetIdParam = parseInt(req.query.id);
+        const exoplanetFound = Exoplanet.findById(exoplanetIdParam);
+        return exoplanetFound;
+    }
 });
 
 
