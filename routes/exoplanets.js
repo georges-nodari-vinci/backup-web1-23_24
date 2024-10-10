@@ -40,10 +40,14 @@ router.get('/search', function (req, res, next) {
     let min3charOK = false;
     let exoplanetsTable = null;
     if (uniqueNameExoplanetParam.length >= 3) {
+        searchPlanet();
+    }
+    res.render('exoplanets/index.hbs', { exoplanetsTable, min3charOK });
+
+    function searchPlanet() {
         min3charOK = true;
         exoplanetsTable = Exoplanet.search(uniqueNameExoplanetParam);
     }
-    res.render('exoplanets/index.hbs', { exoplanetsTable, min3charOK });
 });
 
 router.post('/delete', (req, res, next) => {
