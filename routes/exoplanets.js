@@ -111,6 +111,14 @@ router.get('/update', function (req, res, next) {
 
 /* POST update exoplanet. */
 router.post('/update', function (req, res, next) {
+    savePlanet(req);
+
+    res.redirect('/exoplanets');
+});
+
+
+module.exports = router;
+function savePlanet(req) {
     console.log("POST UPDATE EXOPLANET");
     updatePlanet(req);
 
