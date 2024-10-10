@@ -19,22 +19,12 @@ router.get('/', function (req, res, next) {
 
 /* POST add exoplanet. */
 router.post('/add', upload.single('imageExoplanet'), function (req, res, next) {
+
     console.log("POST ADD EXOPLANET");
+    
     // validate name of explanet -> betweeen 3 and 100 character
     if (validator.isLength(req.body.uniqueNameExoplanet, { min: 3, max: 100 })) {
-        console.log("req.file : " + JSON.stringify(req.file));
-        let filename = null;
-        // req.file must be undefined if no file given
-        if (req.file === undefined) filename = null;
-
-        else filename = 'images/' + req.file.filename;
-        Exoplanet.save({
-            uniqueName: req.body.uniqueNameExoplanet,
-            hClass: req.body.hClassExoplanet,
-            discoveryYear: req.body.discoveryYearExoplanet,
-            image: filename
-        });
-        
+        addPlanet(req);
         res.redirect('/exoplanets');
     }
     else {
@@ -119,6 +109,21 @@ router.post('/update', function (req, res, next) {
 
 
 module.exports = router;
+function addPlanet(req) {
+    console.log("req.file : " + JSON.stringify(req.file));
+    let filename = null;
+    // req.file must be undefined if no file given
+    if (req.file === undefined) filename = null;
+
+    else filename = 'images/' + req.file.filename;
+    Exoplanet.save({
+        uniqueName: req.body.uniqueNameExoplanet,
+        hClass: req.body.hClassExoplanet,
+        discoveryYear: req.body.discoveryYearExoplanet,
+        image: filename
+    });
+}
+
 function storage() {
     return multer.diskStorage({
         destination: function (req, file, cb) {
