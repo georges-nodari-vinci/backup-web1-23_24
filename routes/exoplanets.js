@@ -142,7 +142,7 @@ function addPlanet(req) {
     console.log("req.file : " + JSON.stringify(req.file));
     let filename = null;
     // req.file must be undefined if no file given
-    if (req.file === undefined) filename = null;
+    if (req.file === undefine) filename = null;
 
     else filename = 'images/' + req.file.filename;
     Exoplanet.save({
@@ -166,4 +166,7 @@ function storage() {
         }
     });
 }
+
+
+
 
